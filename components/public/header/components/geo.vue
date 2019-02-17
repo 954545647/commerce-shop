@@ -1,6 +1,6 @@
 <template>
   <div class="m-geo">
-    <i class="el-icon-location" />广州
+    <i class="iconfont icon-location" />广州
     <nuxt-link
       class="changeCity"
       to="/changeCity"
