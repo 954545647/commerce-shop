@@ -93,18 +93,20 @@
             .title {
               font-size: 16px;
               color: #222;
-              height: 22px;
-              line-height: 22px;
+              height: 16px;
+              line-height: 16px;
               margin-bottom: 8px;
               font-weight: 500;
               white-space: nowrap;
               overflow: hidden;
               text-overflow: ellipsis;
               cursor: pointer;
+              margin-left: 3px;
             }
 
             .pos {
               font-size: 12px;
+              margin-left: 3px;
 
               span {
                 height: 18px;
@@ -119,7 +121,7 @@
             }
 
             .price {
-              height: 27px;
+              height: 30px;
               overflow: hidden;
               margin-bottom: 10px;
               font-size: 14px;

@@ -2,7 +2,7 @@
   <div class="m-menu">
     <dl class="nav" @mouseleave="mouseleave">
       <dt>全部分类</dt>
-      <dd v-for="(item,index) in menu" :key="index" @mouseenter="enter">
+      <dd v-for="(item,index) in $store.state.home.menu.menu" :key="index" @mouseenter="enter">
         <i :class="item.type"/>
         {{item.name}}
         <span class="arrow"/>
@@ -23,7 +23,7 @@ export default {
     return {
       kind: "", //当前是哪一类
       timer: "",
-      menu: [
+      menuss: [
         {
           type: "food",
           name: "美食",
@@ -60,8 +60,8 @@ export default {
   computed: {
     currentData() {
       // console.log(this.menu.filter(item => item.type == this.kind)[0]); //返回的是一个数组
-      return this.menu.filter(item => item.type == this.kind)[0];
-    }
+      return this.$store.state.home.menu.menu.filter(item => item.type == this.kind)[0];
+    },
   },
   methods: {
     mouseleave() {
@@ -79,6 +79,6 @@ export default {
     dleave() {
       this.kind = "";
     }
-  }
+  },
 };
 </script>
