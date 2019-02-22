@@ -7,32 +7,36 @@
       <el-col :span="15" class="center">
         <div class="wrapper">
           <el-input
-            placeholder="搜索商家或地点"
             v-model="search"
+            placeholder="搜索商家或地点"
             @focus="focus"
-            @input="input"
             @blur="blur"
+            @input="input"
           />
           <button class="el-button el-button--primary">
-            <i class="iconfont icon-search"/>
+            <i class="el-icon-search"/>
           </button>
-          <dl class="hotPlace" v-if="isHotPlace">
+          <dl v-if="isHotPlace" class="hotPlace">
             <dt>热门搜索</dt>
-            <dd v-for="(item, index) in $store.state.home.hotPlace.slice(0,4)" :key="index">
-              <a href>{{item.name}}</a>
+            <dd v-for="(item,idx) in $store.state.home.hotPlace.slice(0,5)" :key="idx">
+              <!-- <a :href="'/products?keyword='+encodeURIComponent(item.name)" :name="item.name">{{ item.name }}</a> -->
+              <nuxt-link :to="'/products/'+item.name" >{{ item.name }}</nuxt-link>
+              <!-- <nuxt-link :to="'/products?keyword='+encodeURIComponent(item.name)" :name="item.name">{{ item.name }}</nuxt-link> -->
             </dd>
           </dl>
-          <dl class="searchList" v-if="isSearchList">
-            <dd v-for="(item, index) in searchList" :key="index">
-              <a href>
-                <span>{{item.name}}</span>
-                <span>{{item.type}}</span>
-              </a>
+          <dl v-if="isSearchList" class="searchList">
+            <dd v-for="(item,idx) in searchList" :key="idx">
+              <!-- <a :href="'/products?keyword='+encodeURIComponent(item.name)">{{ item.name }}</a> -->
+              <nuxt-link :to="'/products/'+item.name" >{{ item.name }}</nuxt-link>
             </dd>
           </dl>
         </div>
         <p class="suggest">
-          <a href v-for="(item, index) in $store.state.home.hotPlace.slice(0,4)" :key="index">{{item.name}}</a>
+          <nuxt-link
+            v-for="(item,idx) in $store.state.home.hotPlace.slice(0,5)"
+            :key="idx"
+            :to="'/products/'+ encodeURIComponent(item.name)"
+          >{{ item.name }}</nuxt-link>
         </p>
         <ul class="nav">
           <li>
@@ -71,7 +75,6 @@
     </el-row>
   </div>
 </template>
-
 
 
 <script>
@@ -122,20 +125,21 @@ export default {
           self.searchList = top.slice(0, 10);
         }
       }
-      // let {status,data:{top}} = await self.$axios.get(`/search/top?input=${input}&city=${city}`)
     }, 300)
-
-    // input() {
-
-    //   let self = this
-    //   let input = self.seach;
-    //   let city = self.$store.state.geo.position.city.replace('市','')
-    //   let {
-    //     status,
-    //     data:{top}
-    //   } = await self.$axios.get(`/search/top?${input}${city}`)
-    //   self.searchList = top.slice(0,10)
-    // }
+  },
+  async mounted() {
+    let self = this;
+    let ses = window.localStorage;
+    const {
+      status,
+      data: { result }
+    } = await self.$axios.get("/search/hotPlace", {
+      params: {
+        city: ses.getItem("currentCity").replace("市", "")
+      }
+    });
+    ses.setItem("result", JSON.stringify(result));
+    self.$store.commit("home/setHotPlace", JSON.parse(ses.getItem("result")));
   }
 };
 </script>

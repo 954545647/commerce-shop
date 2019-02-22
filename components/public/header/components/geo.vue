@@ -7,7 +7,6 @@
     >
       切换城市
     </nuxt-link>
-    [佛山,肇庆,南沙]
   </div>
 </template>
 

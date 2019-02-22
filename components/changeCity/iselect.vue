@@ -20,6 +20,7 @@
 
 <script>
 import _ from "lodash";
+import { async } from "q";
 export default {
   data() {
     return {
@@ -32,6 +33,8 @@ export default {
     };
   },
   watch: {
+    // 监听第一个选择框值的变化
+    // 当选择了某个省份之后就立刻去获取该省份的城市列表
     async pvalue(newPvalue) {
       let self = this;
       // 由于后台接口没有香港澳门台湾的数据,自己处理
@@ -50,7 +53,17 @@ export default {
         self.cvalue = "";
         return;
       }
-
+      // 北京天津返回的是市辖区,要手动修改
+      if (newPvalue == "110000") {
+        self.city = [{ value: newPvalue, label: "北京市" }];
+        self.cvalue = "";
+        return;
+      }
+      if (newPvalue == "120000") {
+        self.city = [{ value: newPvalue, label: "天津市" }];
+        self.cvalue = "";
+        return;
+      }
       let {
         status,
         data: { city }
@@ -64,8 +77,24 @@ export default {
         });
         self.cvalue = "";
       }
+    },
+    // 监听第二个选择框的变化，只要变化了就把当前选择框选中的值保存到本地
+    async cvalue(newCvalue) {
+      let data;
+      if (newCvalue) {
+        data = this.city.filter(item => {
+          return newCvalue == item.value;
+        });
+      }
+      const currentPro = this.province.filter(item => {
+        return item.value == this.pvalue;
+      });
+      window.localStorage.setItem("currentCity", data[0].label);
+      window.localStorage.setItem("currentPro", currentPro[0].label);
+      this.$router.push("/");
     }
   },
+  // 页面渲染完毕后就通过异步方式去获取省份的数据
   async mounted() {
     // this.self = this;
     let {
@@ -82,6 +111,7 @@ export default {
     }
   },
   methods: {
+    // 用户进行筛选的时候触发,但并未选择点击
     querySearchAsync: _.debounce(async function(queryString, cb) {
       // queryString是用户选择的选项,cb是回调函数,返回数据(必须有value值)
       let self = this;
@@ -101,14 +131,26 @@ export default {
             };
           });
           cb(self.cities.filter(item => item.value.indexOf(queryString) > -1));
-        }else{
-          cb([])
+        } else {
+          cb([]);
         }
       }
     }, 200),
-    handleSelect: function(item) {
-      sessionStorage.setItem("currentCity", item.value);
-      this.$router.push('/')
+    // 用户选择好之后点击触发
+    handleSelect: async function(item) {
+      let val = item.value;
+      // sessionStorage.setItem("currentCity", item.value);
+      const {
+        status,
+        data: { city }
+      } = await this.$axios.get("/geo/city");
+      // 根据选择的和城市列表去匹配,获取省份的值
+      const currentPro = city.filter(pro => {
+        return pro.name == val;
+      });
+      window.localStorage.setItem("currentPro", currentPro[0].province);
+      window.localStorage.setItem("currentCity", item.value);
+      this.$router.push("/");
       // window.location='/'
     }
   }
@@ -118,10 +160,10 @@ export default {
 
 <style lang="scss">
 @import "@/assets/css/changecity/iselect.scss";
-.name{
+.name {
   font-size: 16px;
 }
-.sp{
-  margin-left : 100px;
+.sp {
+  margin-left: 100px;
 }
 </style>

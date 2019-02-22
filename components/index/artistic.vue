@@ -59,7 +59,8 @@ export default {
       params: {
         keyword: "景点",
         // city: self.$store.state.geo.position.city
-        city: sessionStorage.getItem('currentCity')
+        // city: sessionStorage.getItem('currentCity')
+        city: localStorage.getItem('currentCity')
       }
     });
     if (status === 200 && count > 0) {

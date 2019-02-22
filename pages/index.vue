@@ -28,7 +28,7 @@ export default {
   },
   async mounted() {
     let self = this;
-    let ses = window.sessionStorage;
+    let ses = window.localStorage;
     if (ses.getItem("currentCity") === "" || !ses.getItem("currentCity")) {
       const {
         status,
@@ -37,22 +37,29 @@ export default {
       ses.setItem("currentCity", city);
       ses.setItem("currentPro", province);
     }
-    if(ses.getItem('currentCity')){
+    if (ses.getItem("currentCity")) {
       const {
         status,
-        data:{result}
-      } = await self.$axios.get('/search/hotPlace',{
-        params:{
-          city: ses.getItem('currentCity').replace('市', '')
+        data: { result }
+      } = await self.$axios.get("/search/hotPlace", {
+        params: {
+          city: ses.getItem("currentCity").replace("市", "")
         }
-      })
-      ses.setItem('result', JSON.stringify(result))
+      });
+      ses.setItem("result", JSON.stringify(result));
     }
+
     // 设置当前城市和省份
-    self.$store.dispatch('geo/setPosition',{city:ses.getItem('currentCity'),province:ses.getItem('currentPro')})
+    await self.$store.dispatch(
+      "geo/setPosition",
+      {
+        city: window.localStorage.getItem("currentCity").replace('市',''),
+        province: window.localStorage.getItem("currentPro")
+      },
+      { root: true }
+    );
     // 设置热门城市
-    self.$store.dispatch('home/setHotPlace',JSON.parse(ses.getItem('result')))
-    ses.setItem('currentCity','')
+    self.$store.dispatch("home/setHotPlace", JSON.parse(ses.getItem("result")));
   }
 };
 </script>
@@ -60,3 +67,5 @@ export default {
 <style lang="scss">
 @import "@/assets/css/index/index.scss";
 </style>
+
+

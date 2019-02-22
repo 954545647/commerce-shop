@@ -12,15 +12,15 @@
           <h4>
             <img src="//s0.meituan.net/bs/fe-web-meituan/2d05c2b/img/avatar.jpg" alt>
           </h4>
-          <p class="m-life-login-name">Hi！你好</p>
+          <p class="m-life-login-name">Hi!{{user}}</p>
           <p>
             <nuxt-link to="/register">
-              <el-button round size="medium">注册</el-button>
+              <el-button round size="medium">切换账号</el-button>
             </nuxt-link>
           </p>
           <p>
             <nuxt-link to="/login">
-              <el-button round size="medium">立即登录</el-button>
+              <el-button round size="medium">立即退出s</el-button>
             </nuxt-link>
           </p>
         </div>
@@ -53,8 +53,22 @@
 <script>
 import Slider from "./slider.vue";
 export default {
+  data() {
+    return {
+      user:''
+    }
+  },
   components: {
     Slider
+  },
+  async mounted() {
+    const {
+      status,
+      data: { user }
+    } = await this.$axios.get("/users/getUser");
+    if (status === 200) {
+      this.user = user;
+    }
   }
 };
 </script>

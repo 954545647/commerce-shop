@@ -3,17 +3,17 @@ import vuex from "vuex";
 import geo from "./modules/geo";
 import home from './modules/menu'
 import citys from './modules/city'
+import hotplace from './modules/hotPlace'
 Vue.use(vuex);
 const store =  () =>
   new vuex.Store({
     modules: {
       geo,
       home,
-      citys
+      citys,
+      hotplace
     },
     actions: {
-      // nuxtServerInit是nuxt工作流的第二步
-      // 这里我们拿不到DOM实例和vue实例,axios类库挂载在app下面的
       async nuxtServerInit({ commit }, { req, app }) {
         // 城市数据SSR渲染
         // const {
@@ -22,6 +22,7 @@ const store =  () =>
         // } = await app.$axios.get("/geo/getPosition");
         // // console.log(province,city)
         // commit('geo/setPosition',status===200?{city,province}:{city:'',province:''})
+        // commit('geo/setPosition',{city:this.localStorage.getItem('currentCity'),province:this.localStorage.getItem('currentPro')})
 
         // 首页菜单数据SSR渲染
         const {
@@ -55,7 +56,7 @@ const store =  () =>
         // } = await app.$axios.get('/geo/province')
         // commit('citys/setCity',status4===200?province1:[])
       }
-    }
+    },
   });
 
   export default store
