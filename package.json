@@ -43,6 +43,7 @@
   },
   "devDependencies": {
     "leanengine": "^3.3.2",
-    "nodemon": "^1.18.9"
+    "nodemon": "^1.18.9",
+    "vue-awesome-swiper": "^3.1.3"
   }
 }

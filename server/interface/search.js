@@ -1,10 +1,10 @@
 import Router from "koa-router";
 import axios from "./utils/axios";
-import Poi from './../dbs/modules/poi'
+import Poi from "./../dbs/modules/poi";
+import sign from './utils/sign'
 let router = new Router({
   prefix: "/search"
 });
-const sign = "7a865613ffa5b62b06cabdc11b30b121";
 
 // 推荐接口
 router.get("/top", async ctx => {
@@ -20,49 +20,79 @@ router.get("/top", async ctx => {
       sign
     }
   });
-  if(status===200){
-    ctx.body={
+  if (status === 200) {
+    ctx.body = {
       top
-    }
-  }else{
-    ctx.body={
-      top:''
-    }
+    };
+  } else {
+    ctx.body = {
+      top: ""
+    };
   }
 });
 
-
 // 热门地点接口
-router.get('/hotPlace', async ctx=>{
+router.get("/hotPlace", async ctx => {
   // vuex是服务端和客户端共享的!!
-  let city = ctx.store?ctx.store.state.geo.position.city:ctx.query.city
-  let {status,data:{result}} = await axios.get(`http://cp-tools.cn/search/hotPlace`,{
-    params:{
+  let city = ctx.store ? ctx.store.state.geo.position.city : ctx.query.city;
+  let {
+    status,
+    data: { result }
+  } = await axios.get(`http://cp-tools.cn/search/hotPlace`, {
+    params: {
       city,
       sign
     }
-  })
-  ctx.body={
-    result:status==200?result:[]
-  }
-})
-
+  });
+  ctx.body = {
+    result: status == 200 ? result : []
+  };
+});
 
 // 有格调数据接口
-router.get('/resultsByKeywords',async ctx=>{
+router.get("/resultsByKeywords", async ctx => {
   let {
     status,
-    data:{count,pois}
-  } = await axios.get('http://cp-tools.cn/search/resultsByKeywords',{
-    params:{
+    data: { count, pois }
+  } = await axios.get("http://cp-tools.cn/search/resultsByKeywords", {
+    params: {
       city: ctx.query.city,
       keyword: ctx.query.keyword,
       sign
     }
-  })
-  ctx.body= {
-    count: status==200?count:'',
-    pois: status==200?pois:[]
+  });
+  ctx.body = {
+    count: status == 200 ? count : "",
+    pois: status == 200 ? pois : []
+  };
+});
+
+// 商品详情数据接口
+router.get("/products", async ctx => {
+  let keyword = ctx.query.keyword || "美食";
+  let city = ctx.query.city || "广州";
+  let {
+    status,
+    data: { product, more }
+  } = await axios.get(`http://cp-tools.cn/search/products`, {
+    params: {
+      keyword,
+      city,
+      sign
+    }
+  });
+  if (status === 200) {
+    ctx.body = {
+      product,
+      more: ctx.isAuthenticated() ? more : [],
+      login: ctx.isAuthenticated()
+    };
+  } else {
+    ctx.body = {
+      product: {},
+      more: ctx.isAuthenticated() ? more : [],
+      login: ctx.isAuthenticated()
+    };
   }
-})
-export default router
+});
+export default router;

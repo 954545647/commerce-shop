@@ -35,7 +35,7 @@
           <nuxt-link
             v-for="(item,idx) in $store.state.home.hotPlace.slice(0,5)"
             :key="idx"
-            :to="'/products/'+ encodeURIComponent(item.name)"
+            :to="'/products/'+ item.name"
           >{{ item.name }}</nuxt-link>
         </p>
         <ul class="nav">

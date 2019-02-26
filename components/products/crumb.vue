@@ -27,6 +27,9 @@ export default {
 }
 .el-breadcrumb__inner {
   cursor: pointer;
+   &:hover {
+    color: #31bbac !important;
+  }
 }
 .nuxt-link-active {
   cursor: pointer !important;
