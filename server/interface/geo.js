@@ -78,7 +78,7 @@ router.get("/menu", async ctx => {
 // 城市id接口
 router.get("/province/:id", async ctx => {
   // 数据库方式
-  // let city = await city.findOne({ id: ctx.params.id });
+  // let city = await City.findOne({ id: ctx.params.id });
   // ctx.body = {
   //   code: 0,
   //   city: city.value.map(item => {

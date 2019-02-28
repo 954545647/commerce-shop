@@ -1,17 +1,10 @@
-// const state = () => ({
-//   position: {}
-// });
 const state = () => ({
   position: {
     city: null,
-    province: null
+    // province: null
   }
 });
-// const mutations = {
-//   setPosition(state, val) {
-//     state.position = val;
-//   }
-// };
+
 const mutations = {
   setPosition(state, val) {
     // Vue.$set(state.position,'city',val.city)
@@ -19,7 +12,7 @@ const mutations = {
     // this.$set(state.position,'city',val.city)
     // this.$set(state.position,'province',val.province)
     state.position.city = val.city;
-    state.position.province = val.province;
+    // state.position.province = val.province;
   }
 };
 

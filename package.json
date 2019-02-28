@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.3.6",
+    "alipay-sdk": "^3.0.4",
     "axios": "^0.18.0",
     "babel-cli": "^6.26.0",
     "babel-eslint": "^10.0.1",
@@ -42,6 +43,7 @@
     "strip-json-comments": "^2.0.1"
   },
   "devDependencies": {
+    "alipay-node-sdk": "^1.1.8",
     "leanengine": "^3.3.2",
     "nodemon": "^1.18.9",
     "vue-awesome-swiper": "^3.1.3"

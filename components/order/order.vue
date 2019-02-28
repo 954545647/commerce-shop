@@ -1,0 +1,91 @@
+<template>
+  <div class="m-order">
+    <ul>
+      <!-- 要判断是否有订单 使用v-if/else -->
+      <li v-if="cur.length">
+        <el-row v-for="(item,idx) in currentData" :key="idx">
+          <el-col :span="4">
+            <img class="o-img" :src="item.img">
+          </el-col>
+          <el-col :span="8">
+            <h4>{{item.name}}</h4>
+            <p>数量: {{item.count}}</p>
+          </el-col>
+          <el-col :span="4">总价: ￥{{item.total}}</el-col>
+          <el-col :span="5">{{item.statusTxt}}</el-col>
+          <el-col :span="3">
+            <el-button type="primary" round @click="topay(item)">去付款</el-button>
+          </el-col>
+        </el-row>
+        <el-pagination
+          layout="prev, pager, next"
+          :total="this.totalPage*10"
+          @current-change="currentHandle"
+          :page-count="this.totalPage"
+        ></el-pagination>
+      </li>
+      <li v-else class="empty">没有订单</li>
+    </ul>
+  </div>
+</template>
+
+
+<script>
+export default {
+  props: {
+    cur: {
+      type: Array,
+      default: () => {
+        return [];
+      }
+    }
+  },
+  data() {
+    return {
+      currentPage: 1,
+      // 如果获取的数据大于5条,仅显示前5条
+      showCount: 5,
+      totalCount: this.cur.length,
+      currentData:
+        this.cur.length > 5
+          ? this.cur.filter((item, idx) => idx < 5)
+          : this.cur,
+      totalPage: this.cur.length / 5,
+      flag: false
+    };
+  },
+  methods: {
+    currentHandle(val) {
+      this.currentPage = val;
+    },
+    topay(value){
+      console.log(value)
+    }
+  },
+  watch: {
+    currentPage: function() {
+      let self = this;
+      let count = self.currentPage; // 2
+      self.currentData = self.cur.filter((item, idx) => {
+        return (
+          idx >= 1 + (count - 1) * this.showCount &&
+          idx <= count * this.showCount
+        );
+      });
+      return self.currentData;
+    }
+  }
+};
+</script>
+
+
+<style lang="scss">
+.el-pagination {
+  text-align: center;
+  margin: 20px 0 10px 0;
+  height: 30px;
+  .number {
+    font-size: 14px;
+  }
+}
+</style>

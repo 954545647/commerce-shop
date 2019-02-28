@@ -1,14 +1,16 @@
 <template>
-  <el-row class="page-product">
-    <el-col :span="19">
-      <Crumb/>
-      <categroy :types="types" :areas="areas"/>
-      <list :list="list" @currentPoint="currentPoint" @currentName="currentName"/>
-    </el-col>
-    <el-col :span="5" class="fix">
-      <amap :point="point" :name="name" v-if="point.length" :width="230" :height="290" />
-    </el-col>
-  </el-row>
+  <div>
+    <el-row class="page-product">
+      <el-col :span="19">
+        <Crumb/>
+        <categroy :types="types" :areas="areas"/>
+        <list :list="list" @currentPoint="currentPoint" @currentName="currentName"/>
+      </el-col>
+      <el-col :span="5" class="fix">
+        <amap :point="point" :name="name" v-if="point.length" :width="230" :height="290"/>
+      </el-col>
+    </el-row>
+  </div>
 </template>
 
 <script>
@@ -30,6 +32,10 @@ export default {
     let a = decodeURIComponent(hre.split("products/")[1]).replace("市", "");
     // 通过vuex进行保存
     this.$store.dispatch("hotplace/setHotName", a);
+    // console.log(this.$store.state.geo.position.city,'5555')
+    // let b = {city:this.$store.state.geo.position.city}
+    // this.$store.dispatch("geo/setPosition", b);
+    // console.log(this.$store.state.geo.position.city,'66666')
   },
   data() {
     return {
@@ -38,15 +44,15 @@ export default {
       areas: [],
       keyword: "",
       point: [], //经纬度,
-      name: ''   //传递过来的名字
+      name: "" //传递过来的名字
     };
   },
   methods: {
     currentPoint(location) {
       this.point = location.split(",");
     },
-    currentName(name){
-      this.name = name
+    currentName(name) {
+      this.name = name;
     }
   },
   async asyncData(ctx) {

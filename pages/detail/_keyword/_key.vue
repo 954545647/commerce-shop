@@ -69,15 +69,15 @@ export default {
   //   };
   // },
   async asyncData(ctx) {
-    // keyword是type,
-    let { keyword, module: type } = ctx.params;
+    console.log(ctx.store.state.geo.position.city,'9999999999')
+    let { keyword, key:type } = ctx.params;
     let {
       status,
       data: { product, more: list, login }
     } = await ctx.$axios.get("/search/products", {
       params: {
         keyword,
-        // type,
+        type,
         city: ctx.store.state.geo.position.city
       }
     });

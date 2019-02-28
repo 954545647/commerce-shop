@@ -1,9 +1,7 @@
 <template>
   <div class="list clear">
     <div class="header">
-      <img
-        src="https://img.meituan.net/avatar/3a57490f14d088a0cff474d931c0bf7363161.jpg@60w_60h_1e_1c"
-      >
+
     </div>
     <div class="info">
       <span class="name">符符符虹耶</span>
@@ -20,8 +18,6 @@
           <img :src="item.url" class="Img">
         </swiper-slide>
         <div class="swiper-pagination" slot="pagination"></div>
-        <div class="swiper-button-prev" slot="button-prev"></div>
-        <div class="swiper-button-next" slot="button-next"></div>
       </swiper>
     </div>
   </div>

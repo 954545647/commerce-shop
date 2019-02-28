@@ -20,14 +20,14 @@
             <dt>热门搜索</dt>
             <dd v-for="(item,idx) in $store.state.home.hotPlace.slice(0,5)" :key="idx">
               <!-- <a :href="'/products?keyword='+encodeURIComponent(item.name)" :name="item.name">{{ item.name }}</a> -->
-              <nuxt-link :to="'/products/'+item.name" >{{ item.name }}</nuxt-link>
+              <nuxt-link :to="'/products/'+encodeURIComponent(item.name)" >{{ item.name }}</nuxt-link>
               <!-- <nuxt-link :to="'/products?keyword='+encodeURIComponent(item.name)" :name="item.name">{{ item.name }}</nuxt-link> -->
             </dd>
           </dl>
           <dl v-if="isSearchList" class="searchList">
             <dd v-for="(item,idx) in searchList" :key="idx">
               <!-- <a :href="'/products?keyword='+encodeURIComponent(item.name)">{{ item.name }}</a> -->
-              <nuxt-link :to="'/products/'+item.name" >{{ item.name }}</nuxt-link>
+              <nuxt-link :to="'/products/'+encodeURIComponent(item.name)" >{{ item.name }}</nuxt-link>
             </dd>
           </dl>
         </div>
@@ -35,7 +35,7 @@
           <nuxt-link
             v-for="(item,idx) in $store.state.home.hotPlace.slice(0,5)"
             :key="idx"
-            :to="'/products/'+ item.name"
+            :to="'/products/'+ encodeURIComponent(item.name)"
           >{{ item.name }}</nuxt-link>
         </p>
         <ul class="nav">

@@ -4,6 +4,7 @@ import geo from "./modules/geo";
 import home from './modules/menu'
 import citys from './modules/city'
 import hotplace from './modules/hotPlace'
+import geocity from './modules/geocity'
 Vue.use(vuex);
 const store =  () =>
   new vuex.Store({
@@ -11,7 +12,8 @@ const store =  () =>
       geo,
       home,
       citys,
-      hotplace
+      hotplace,
+      geocity
     },
     actions: {
       async nuxtServerInit({ commit }, { req, app }) {

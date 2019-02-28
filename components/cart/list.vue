@@ -1,18 +1,20 @@
 <template>
   <div>
-    <el-table :data="tableData" style="width: 100%">
-      <el-table-column label="项目" width="532" prop="data">
+    <el-table :data="cartData" style="width: 980px">
+      <el-table-column label="项目" width="532" prop="name"></el-table-column>
+
+      <el-table-column label="单价" width="82" prop="price"/>
+
+      <el-table-column class="l-count" label="数量" width="242">
+        <template slot-scope="scope">
+          <el-input-number v-model="scope.row.count" @change="handleChange" :min="0"/>
+        </template>
       </el-table-column>
 
-      <el-table-column label="单价" width="132" prop="name"/>
-
-      <el-table-column label="数量" width="212"/>
-
       <el-table-column label="总价">
-        <!-- <template slot-scope="scope">
-        <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-        <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-        </template>-->
+        <template slot-scope="scope">
+          <div>{{scope.row.price * scope.row.count}}</div>
+        </template>
       </el-table-column>
     </el-table>
   </div>
@@ -20,20 +22,27 @@
 
 <script>
 export default {
-  data() {
-    return {
-      tableData: [
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄"
-        }
-      ]
-    };
+  props: {
+    cartData:{
+      type: Array,
+      default:()=>{
+        return []
+      }
+    }
+  },
+  methods:{
+    handleChange(){
+    }
   }
 };
 </script>
 
 
 <style lang="scss">
+
+.el-table_3_column_11{
+  >div{
+    text-align: center;
+  }
+}
 </style>
