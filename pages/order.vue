@@ -79,6 +79,7 @@
 
 <script>
 import list from "@/components/order/order.vue";
+import axios from 'axios';
 export default {
   components: {
     list
@@ -101,9 +102,16 @@ export default {
   async asyncData(ctx) {
     let {
       status,
+      data: { user }
+    } = await ctx.$axios.get("/users/getUser");
+    console.log(user)
+    let {
+      status:status2,
       data: { code, list }
-    } = await ctx.$axios.post("/order/getOrders");
-    if (status === 200 && code === 0 && list.length) {
+    } = await ctx.$axios.post("/order/getOrders",{
+      user: user
+    });
+    if (status2 === 200 && code === 0 && list.length) {
       // 必须返回对象的形式,不然不会和data中的数据融合
       return {
         list: list.map(item => {

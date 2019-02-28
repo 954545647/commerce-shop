@@ -1,6 +1,10 @@
 const path = require("path");
-const Alipay = require("alipay-node-sdk");
-let outTradeId = Date.now().toString();
+const AlipaySdk = require("alipay-sdk").default;
+const alipaySdk = new AlipaySdk({
+  appId: "2016123456789012",
+  privateKey: fs.readFileSync("./private-key.pem", "ascii"),
+  alipayPublicKey: fs.readFileSync("./public-key.pem", "ascii")
+});
 
 var ali = new Alipay({
   appId: "2016092800615427",
@@ -34,7 +38,6 @@ var ali = new Alipay({
 //     var ok = ali.signVerify(ret.json());
 //   });
 
-
 // // 查询对账账单下载地址
 // ali
 //   .billDownloadUrlQuery({
@@ -44,6 +47,5 @@ var ali = new Alipay({
 //   .then(function(ret) {
 //     console.log("***** ret.body=" + ret.body);
 //   });
-
 
 console.log(ali);

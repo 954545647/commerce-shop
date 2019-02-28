@@ -38,6 +38,7 @@ export default {
   methods: {
     // 创建一个购物车
     creatCart: async function() {
+      console.log(1)
       let self = this;
       let {
         status,
