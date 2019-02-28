@@ -58,7 +58,6 @@ router.post("/createOrder", async ctx => {
 // 点击完提交订单之后会跳转到我的订单页面,此时用户就可以根据这个订单id去获取数据
 router.post("/getOrders", async ctx => {
   let {user} = ctx.request.body;
-  console.log(user)
   // 查看我的订单必须要有登录
   if (!ctx.isAuthenticated()) {
     ctx.body = {

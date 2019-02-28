@@ -5,6 +5,10 @@ const order = new mongoose.Schema({
     type: String,
     require: true
   },
+  count:{
+    type: Number,
+    require: true
+  },
   user: {
     type: String,
     require: true
