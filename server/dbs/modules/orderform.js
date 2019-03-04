@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
-const order = new mongoose.Schema({
-  id: {
+const Orderform = new mongoose.Schema({
+  orderid: {
     type: String,
     require: true
   },
@@ -31,4 +31,4 @@ const order = new mongoose.Schema({
   }
 });
 
-export default mongoose.model("Order", order);
+export default mongoose.model("Orderform", Orderform);

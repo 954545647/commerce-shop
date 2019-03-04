@@ -58,8 +58,17 @@ export default {
     currentHandle(val) {
       this.currentPage = val;
     },
-    topay(value){
-      console.log(value)
+    async topay(value){
+      // 订单号
+      let order = window.location.href.split('/?id=')[1]
+      // let order = (Math.random() *1000).toString();
+      let {status,data} = await this.$axios.post('/pay',{
+        timeoutExpress: '30m',
+        orderId: order,
+        money: value.total
+      })
+      console.log(data,'555')
+      location.href = data;
     }
   },
   watch: {

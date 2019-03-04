@@ -10,7 +10,7 @@
         <summ :meta="product"/>
       </el-col>
     </el-row>
-    <el-row class="m-title" v-if="canOrder || !login">
+    <el-row class="m-title">
       <el-col :span="24">
         <h3>商家团购及优惠</h3>
       </el-col>
@@ -31,13 +31,13 @@
       </el-col>
     </el-row>
     <!--评论标题 -->
-    <el-row class="m-title" v-if="canOrder || !login">
+    <el-row class="m-title">
       <el-col :span="24">
         <h3>1431条网友点评</h3>
       </el-col>
     </el-row>
     <!-- 评论模块 -->
-    <el-row class="m-title" v-if="canOrder || !login">
+    <el-row class="m-title">
       <el-col :span="24">
         <comment />
       </el-col>
@@ -69,6 +69,7 @@ export default {
   //   };
   // },
   async asyncData(ctx) {
+    console.log(ctx.store.state.geo.position.city,'9999999999')
     let { keyword, key:type } = ctx.params;
     let {
       status,

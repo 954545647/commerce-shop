@@ -61,6 +61,7 @@ export default {
           id: this.cartNo,
       });
       if (status === 200 && code === 0) {
+        console.log(1)
         // 如果创建成功,数据库会有我们的订单数据,把订单通过url传出去
         this.$confirm(`订单创建成功, 订单号${id}`, "下单成功", {
           confirmButtonText: "确定",
