@@ -59,16 +59,16 @@
       <el-col :span="19" class="table">
         <el-tabs v-model="activeName" @tab-click="handleClick">
           <el-tab-pane label="全部订单" name="all">
-            <list :cur="cur"/>
+            <list :cur="list"/>
           </el-tab-pane>
           <el-tab-pane label="待付款" name="unpay">
-            <list :cur="cur"/>
+            <list :cur="Unpay"/>
           </el-tab-pane>
-          <el-tab-pane label="待使用" name="unuse">
-            <list :cur="cur"/>
+          <el-tab-pane label="待使用" name="unuse" @click="unUse">
+            <list :cur="HasPay"/>
           </el-tab-pane>
           <el-tab-pane label="退款/售后" name="unreplay">
-            <list :cur="cur"/>
+            <list :cur="list"/>
           </el-tab-pane>
         </el-tabs>
       </el-col>
@@ -96,36 +96,84 @@ export default {
     }
   },
   methods: {
-    handleClick() {}
+    handleClick() {},
+    unUse() {
+      console.log(this.HasPay);
+    }
+  },
+  async mounted() {
+    console.log(this.HasPay);
   },
   async asyncData(ctx) {
     let {
       status,
+      data: { user }
+    } = await ctx.$axios.get("/users/getUser");
+    let {
+      status: status2,
       data: { code, list }
-    } = await ctx.$axios.post("/order/getOrders");
-    if (status === 200 && code === 0 && list.length) {
+    } = await ctx.$axios.post("/order/getOrders", {
+      user: user
+    });
+    if (status2 === 200 && code === 0 && list.length) {
       // 必须返回对象的形式,不然不会和data中的数据融合
       return {
+        // 全部数据
         list: list.map(item => {
           return {
             img: item.imgs.length ? item.imgs[0].url : "/logo.png",
             name: item.name,
-            count: 1,
+            count: item.count,
             total: item.total,
             status: item.status,
-            statusTxt: item.status === 0 ? "待付款" : "已付款"
+            statusTxt: item.status === 0 ? "待付款" : "已付款",
+            id: item.id
           };
         }),
-        cur: list.map(item => {
-          return {
-            img: item.imgs.length ? item.imgs[0].url : "@/3.png",
-            name: item.name,
-            count: 1,
-            total: item.total,
-            status: item.status,
-            statusTxt: item.status === 0 ? "待付款" : "已付款"
-          };
-        })
+        // cur: list.map(item => {
+        //   return {
+        //     img: item.imgs.length ? item.imgs[0].url : "@/3.png",
+        //     name: item.name,
+        //     count: item.count,
+        //     total: item.total,
+        //     status: item.status,
+        //     statusTxt: item.status === 0 ? "待付款" : "已付款",
+        //     id: item.id
+        //   };
+        // }),
+        // 未付款的!!
+        // 先根据 status 筛选出没有付款的数据
+        Unpay: list
+          .filter(item => {
+            return !item.status;
+          })
+          .map(item => {
+            return {
+              img: item.imgs.length ? item.imgs[0].url : "@/3.png",
+              name: item.name,
+              count: item.count,
+              total: item.total,
+              status: item.status,
+              statusTxt: "待付款",
+              id: item.id
+            };
+          }),
+        // 已经付款了的!
+        HasPay: list
+          .filter(item => {
+            return item.status;
+          })
+          .map(item => {
+            return {
+              img: item.imgs.length ? item.imgs[0].url : "@/3.png",
+              name: item.name,
+              count: item.count,
+              total: item.total,
+              status: item.status,
+              statusTxt: "已付款",
+              id: item.id
+            };
+          })
       };
     }
   }
@@ -165,13 +213,11 @@ export default {
     }
   }
   .el-tabs__item {
-    font-size: 20px;
+    font-size: 18px;
     color: #222;
     line-height: 26px;
-    width: 105px;
     text-align: center;
     height: 38px;
-    margin-right: 25px;
     font-weight: 500;
     cursor: pointer;
   }

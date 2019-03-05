@@ -4,6 +4,10 @@ const AlipaySdk = require("alipay-sdk").default;
 const Orderform = require("./../dbs/modules/orderform");
 const AlipayFormData = require("alipay-sdk/lib/form");
 const Router = require("koa-router");
+// const Order = require('../dbs/modules/order')
+// const User = require('../dbs/modules/user')
+import Order from "../dbs/modules/order";
+import User from '../dbs/modules/user'
 // let router = new Router({
 //   prefix: "/order"
 // });
@@ -50,6 +54,19 @@ router.get("/pay-confirm", async (ctx, next) => {
   // 对返回结果进行验签
   let payUp = alipaySdk.checkNotifySign(ctx.query);
   ctx.body = ctx.query
+  let goodId = ctx.query.out_trade_no
+  console.log(goodId)
+  if(payUp){
+    let userId =  ctx.session.passport.user
+    let result = await Order.find({id: goodId})
+    let data = await Order.where({
+      id: goodId
+    }).update({
+      status: 2
+    })
+    console.log(data,'1')
+    console.log(result,'2')
+  }
   // if (payUp) {
   //   let result = await Orderform.updateOne(
   //     { $and: [{ orderid: ctx.query.out_trade_no }, { status: 1 }] },
@@ -64,9 +81,9 @@ router.get("/pay-confirm", async (ctx, next) => {
   //   ctx.status = 301;
   //   return ctx.response.redirect("/");
   // }
-  console.log(payUp)
+  console.log(payUp,'5666')
   ctx.status = 301;
-  return ctx.response.redirect("/");
+  return ctx.response.redirect("/order");
 });
 
 module.exports = router;

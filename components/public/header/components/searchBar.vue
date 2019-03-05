@@ -129,7 +129,7 @@ export default {
   },
   async mounted() {
     let self = this;
-    let ses = window.localStorage;
+    let ses = window.sessionStorage;
     const {
       status,
       data: { result }

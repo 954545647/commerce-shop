@@ -28,7 +28,7 @@ export default {
   },
   async mounted() {
     let self = this;
-    let ses = window.localStorage;
+    let ses = window.sessionStorage;
     if (ses.getItem("currentCity") === "" || !ses.getItem("currentCity")) {
       const {
         status,
@@ -53,8 +53,8 @@ export default {
     await self.$store.dispatch(
       "geo/setPosition",
       {
-        city: window.localStorage.getItem("currentCity").replace('市',''),
-        province: window.localStorage.getItem("currentPro")
+        city: window.sessionStorage.getItem("currentCity").replace('市',''),
+        province: window.sessionStorage.getItem("currentPro")
       },
       { root: true }
     );

@@ -3,7 +3,7 @@ import axios from "./utils/axios";
 import Cart from "../dbs/modules/cart";
 import md5 from "crypto-js/md5";
 import Order from "../dbs/modules/order";
-
+import User from '../dbs/modules/user'
 const router = new Router({
   prefix: "/order"
 });
@@ -57,6 +57,7 @@ router.post("/createOrder", async ctx => {
 // 然后会在数据库中保存一条订单信息,并且会返回一个订单id
 // 点击完提交订单之后会跳转到我的订单页面,此时用户就可以根据这个订单id去获取数据
 router.post("/getOrders", async ctx => {
+  let {user} = ctx.request.body;
   // 查看我的订单必须要有登录
   if (!ctx.isAuthenticated()) {
     ctx.body = {
@@ -67,7 +68,9 @@ router.post("/getOrders", async ctx => {
   } else {
     try {
       // 去查找全部数据,然后我们在前端再做数据筛选
-      let result = await Order.find();
+      let userDate = await User.findOne({username:user})
+      let userId = userDate._id
+      let result = await Order.find({user:userId});
       if (result) {
         ctx.body = {
           code: 0,

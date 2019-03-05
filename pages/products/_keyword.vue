@@ -90,7 +90,7 @@ export default {
               img: item.photos[0].url,
               name: item.name,
               comment: Math.floor(Math.random() * 1000),
-              rate: Number(item.biz_ext.rating),
+              // rate: Number(item.biz_ext.rating),
               price: Number(item.biz_ext.cost),
               scence: item.tag,
               tel: item.tel,

@@ -2,6 +2,8 @@ import Router from "koa-router";
 import axios from "./utils/axios";
 import Province from "./../dbs/modules/province";
 import City from "./../dbs/modules/city";
+import currentCity from "./../dbs/modules/currentCity";
+
 let router = new Router({
   prefix: "/geo"
 });
@@ -26,6 +28,46 @@ router.get("/getPosition", async ctx => {
     };
   }
 });
+
+// 在数据库中获取当前城市信息
+router.get("/currentCity", async ctx => {
+  let result = await currentCity.findOne();
+  // 先去数据库中查看是否有当前城市的数据
+  // 如果没有的话就去请求站外接口根据定位获取数据
+  if (!result) {
+    let {
+      status,
+      data: { province, city }
+    } = await axios.get(`http://cp-tools.cn/geo/getPosition?sign=${sign}`);
+    let curcityName = new currentCity({
+      name: city
+    });
+    curcityName.save();
+    ctx.body = {
+      cityname: city
+    };
+  } else {
+    //如果有数据就之前返回当前数据库数据
+    ctx.body = {
+      cityname: result.name
+    };
+  }
+});
+
+// 根据用户提供的数据去数据库修改当前城市信息
+router.get('/changeCurrentCity',async ctx =>{
+  // 先把数据库中的数据移除掉
+  let city = await currentCity.deleteOne()
+  // 把请求传递过来的参数重新设置到数据库中
+  let curcityName = new currentCity({
+    name: ctx.query.cityname
+  });
+  curcityName.save()
+  ctx.body= {
+    code: 0
+  }
+})
+
 
 // 获取城市省份
 router.get("/province", async ctx => {

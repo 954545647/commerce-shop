@@ -14,7 +14,8 @@
           <el-col :span="4">总价: ￥{{item.total}}</el-col>
           <el-col :span="5">{{item.statusTxt}}</el-col>
           <el-col :span="3">
-            <el-button type="primary" round @click="topay(item)">去付款</el-button>
+            <el-button v-if="item.status===0" type="info" round @click="topay(item)">去付款</el-button>
+            <el-button v-else type="primary" round @click="topay(item)">去评价</el-button>
           </el-col>
         </el-row>
         <el-pagination
@@ -60,14 +61,13 @@ export default {
     },
     async topay(value){
       // 订单号
-      let order = window.location.href.split('/?id=')[1]
-      // let order = (Math.random() *1000).toString();
+      let order = value.id
       let {status,data} = await this.$axios.post('/pay',{
         timeoutExpress: '30m',
         orderId: order,
         money: value.total
       })
-      console.log(data,'555')
+      // 跳转到支付链接
       location.href = data;
     }
   },

@@ -64,6 +64,7 @@ export default {
         self.cvalue = "";
         return;
       }
+      // 调用接口,获取指定省份的城市数据
       let {
         status,
         data: { city }
@@ -80,17 +81,30 @@ export default {
     },
     // 监听第二个选择框的变化，只要变化了就把当前选择框选中的值保存到本地
     async cvalue(newCvalue) {
+      // 这个newCvalue是城市编码id值
+      // 在点击第一个框之后就已经获取了某个省份城市的数据 city
+      // 根据这个城市编码id值去和 city 中的值进行筛选匹配
       let data;
       if (newCvalue) {
         data = this.city.filter(item => {
           return newCvalue == item.value;
         });
       }
+      // 通过filter方法之后返回的是一个数组
+      let currentCityName = data[0].label
       const currentPro = this.province.filter(item => {
         return item.value == this.pvalue;
       });
-      window.localStorage.setItem("currentCity", data[0].label);
-      window.localStorage.setItem("currentPro", currentPro[0].label);
+      let {
+        status: stauts2,
+        data: { code }
+      } = await this.$axios.get("/geo/changeCurrentCity", {
+        params: {
+          cityname: currentCityName
+        }
+      });
+      window.sessionStorage.setItem("currentCity", currentCityName);
+      window.sessionStorage.setItem("currentPro", currentPro[0].label);
       this.$router.push("/");
     }
   },
@@ -140,6 +154,14 @@ export default {
     handleSelect: async function(item) {
       let val = item.value;
       // sessionStorage.setItem("currentCity", item.value);
+      let {
+        status: stauts2,
+        data: { code }
+      } = await this.$axios.get("/geo/changeCurrentCity", {
+        params: {
+          cityname: val
+        }
+      });
       const {
         status,
         data: { city }
@@ -148,8 +170,9 @@ export default {
       const currentPro = city.filter(pro => {
         return pro.name == val;
       });
-      window.localStorage.setItem("currentPro", currentPro[0].province);
-      window.localStorage.setItem("currentCity", item.value);
+      // 希望用户重新登录的时候可以再次获取当前城市的数据,所以使用的sessionStorage
+      window.sessionStorage.setItem("currentPro", currentPro[0].province);
+      window.sessionStorage.setItem("currentCity", item.value);
       this.$router.push("/");
       // window.location='/'
     }
