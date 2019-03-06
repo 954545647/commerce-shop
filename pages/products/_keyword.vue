@@ -1,16 +1,14 @@
 <template>
-  <div>
-    <el-row class="page-product">
-      <el-col :span="19">
-        <Crumb/>
-        <categroy :types="types" :areas="areas"/>
-        <list :list="list" @currentPoint="currentPoint" @currentName="currentName"/>
-      </el-col>
-      <el-col :span="5" class="fix">
-        <!-- <amap :point="point" :name="name" v-if="point.length" :width="230" :height="290"/> -->
-      </el-col>
-    </el-row>
-  </div>
+  <el-row class="page-product">
+    <el-col :span="19">
+      <Crumb/>
+      <categroy :types="types" :areas="areas"/>
+      <list :list="list" @currentPoint="currentPoint" @currentName="currentName"/>
+    </el-col>
+    <el-col :span="5" class="fix">
+      <amap  v-if="point.length" :point="point" :name="name" :width="230" :height="290"/>
+    </el-col>
+  </el-row>
 </template>
 
 <script>
@@ -32,10 +30,6 @@ export default {
     let a = decodeURIComponent(hre.split("products/")[1]).replace("市", "");
     // 通过vuex进行保存
     this.$store.dispatch("hotplace/setHotName", a);
-    // console.log(this.$store.state.geo.position.city,'5555')
-    // let b = {city:this.$store.state.geo.position.city}
-    // this.$store.dispatch("geo/setPosition", b);
-    // console.log(this.$store.state.geo.position.city,'66666')
   },
   data() {
     return {
@@ -58,6 +52,7 @@ export default {
   async asyncData(ctx) {
     let keyword = ctx.params.keyword;
     let city = ctx.store.state.geo.position.city;
+    console.log(city, "vuex中的city");
     let {
       status,
       data: { count, pois }
@@ -75,7 +70,6 @@ export default {
         city
       }
     });
-
     if ((status === 200) & (count > 0) && status2 === 200) {
       return {
         // 把返回的数据中没有图片的过滤掉
@@ -90,7 +84,7 @@ export default {
               img: item.photos[0].url,
               name: item.name,
               comment: Math.floor(Math.random() * 1000),
-              // rate: Number(item.biz_ext.rating),
+              rate: Number(item.biz_ext.rating),
               price: Number(item.biz_ext.cost),
               scence: item.tag,
               tel: item.tel,

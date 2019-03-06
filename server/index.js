@@ -16,7 +16,7 @@ import categroy from "./interface/categroy";
 import cart from './interface/cart';
 import order from './interface/order';
 import pay from './interface/pay';
-
+import comment from './interface/comment'
 const app = new Koa();
 
 // Import and Set Nuxt.js options
@@ -69,6 +69,7 @@ async function start() {
   app.use(cart.routes()).use(cart.allowedMethods())
   app.use(order.routes()).use(order.allowedMethods())
   app.use(pay.routes()).use(pay.allowedMethods())
+  app.use(comment.routes()).use(comment.allowedMethods())
   app.use(ctx => {
     ctx.status = 200;
     ctx.respond = false; // Bypass Koa's built-in response handling

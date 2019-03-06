@@ -48,7 +48,7 @@ export default {
     // 在购物车页面中点击提交订单按钮,在后台会偷偷创建一个订单
     // 创建订单后台会返回一个订单id,我们就可以把这个订单id通过url传参的形式传到订单页面
     // 接着在订单页面就可以从url中获取我们在这里创建订单并传递过去的订单id,然后去获取订单数据
-    submit: async function(){
+    submit: async function() {
       let self = this;
       // 创建订单会返回订单id
       let {
@@ -56,26 +56,34 @@ export default {
         data: { code, id }
       } = await self.$axios.post("/order/createOrder", {
         count: this.cart[0].count,
-          price: this.cart[0].price,
+        price: this.cart[0].price,
         // 把购物车id传递过去
-          id: this.cartNo,
+        id: this.cartNo
       });
       if (status === 200 && code === 0) {
         // 如果创建成功,数据库会有我们的订单数据,把订单通过url传出去
         this.$confirm(`订单创建成功, 订单号${id}`, "下单成功", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
-          type: "success",
+          type: "success"
           // callback:action=>{
           //   window.location.href = `/order/?id=${id}`;
           // }
-        }).then(()=>{
-          // 把订单订单id通过url的方式传递到我们的订单页面!!
-          // 接着我们就可以在订单页面通过这个id去获取数据库中的值
-          window.location.href =  `/order/?id=${id}`;
-        }).catch(()=>{
-          window.location.href =  '/order';
         })
+          .then(() => {
+            // 把订单订单id通过url的方式传递到我们的订单页面!!
+            // 接着我们就可以在订单页面通过这个id去获取数据库中的值
+            // window.location.href = `/order/?id=${id}`;
+            this.$router.push({
+              path: `/order/?id=${id}`
+            });
+          })
+          .catch(() => {
+            // window.location.href = "/order";
+            this.$router.push({
+              path: `/`
+            });
+          });
       } else {
         console.log("error");
       }

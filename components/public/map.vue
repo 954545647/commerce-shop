@@ -2,7 +2,7 @@
   <!-- <div id="container" class="container" :class="{fix: isfix}"></div> -->
   <div
     :id="id"
-    :style="{width:width+'px',height:height+'px',margin:'34px auto'}"
+    :style="{width:width+'px',height:height+'px',margin:'32px auto'}"
     class="m-map"
     :class="{isFix : flag}"
   />
@@ -10,6 +10,7 @@
 
 <script>
 import axios from "@/server/interface/utils/axios";
+import { setTimeout } from "timers";
 export default {
   props: {
     width: {
@@ -40,8 +41,10 @@ export default {
   watch: {
     name: function(newName, old) {},
     point: function(val, old) {
-      this.map.setCenter(val);
-      this.marker.setPosition(val);
+      if (this.map) {
+        this.map.setCenter(val);
+        this.marker.setPosition(val);
+      }
     }
   },
   mounted() {
@@ -55,13 +58,12 @@ export default {
         zoom: 11, //级别
         center: self.point //中心点坐标
       });
-
       self.map = map;
-      // //实时路况图层
-      // var trafficLayer = new window.AMap.TileLayer.Traffic({
-      //   zIndex: 10
-      // });
-      // map.add(trafficLayer); //添加实时路况图层到地图
+      //实时路况图层
+      var trafficLayer = new window.AMap.TileLayer.Traffic({
+        zIndex: 10
+      });
+      map.add(trafficLayer); //添加实时路况图层到地图
 
       // 定义插件
       window.AMap.plugin(["AMap.ToolBar", "AMap.OverView"], () => {
@@ -79,7 +81,7 @@ export default {
         self.marker = marker;
         marker.setMap(map);
 
-        //鼠标点击marker弹出自定义的信息窗体
+        // 鼠标点击marker弹出自定义的信息窗体
         AMap.event.addListener(marker, "click", function() {
           // infoWindow.open(map, marker.getPosition());
           openInfo();
@@ -120,7 +122,7 @@ export default {
 <style lang="scss">
 .isFix {
   position: fixed !important;
-  right: 174px;
+  right: 180px;
   top: -50px;
 }
 </style>

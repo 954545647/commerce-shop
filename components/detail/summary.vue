@@ -4,7 +4,7 @@
       <h1>{{meta.name}}</h1>
       <!-- <el-rate v-model="rate" disabled/> -->
       <!-- <span>{{Number(meta.biz_ext.rating)||rate}}分</span> -->
-      <span>人均￥{{ Number(meta.biz_ext.cost) }}</span>
+      <!-- <span>人均￥{{ Number(meta.biz_ext.cost) }}</span> -->
       <ul>
         <li @click="openMap(meta.location)">地址：{{ meta.address }}</li>
         <li v-if="meta.tel">电话：{{ meta.tel.length? meta.tel : '暂无' }}</li>

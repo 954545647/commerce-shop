@@ -1,129 +1,115 @@
 <template>
-  <div class="list clear">
-    <div class="header">
-
-    </div>
-    <div class="info">
-      <span class="name">符符符虹耶</span>
-      <div class="date">
-        <span>2019年2月23日</span>
-      </div>
-      <div class="block">
-        <span class="demonstration"></span>
-        <el-rate v-model="value"></el-rate>
-      </div>
-      <div class="desc">态度超好！超美味！这是全广州最好吃的重庆火锅了吧！</div>
-      <swiper :options="swiperOption" class="swiper">
-        <swiper-slide v-for="(item,idx) in imgs" :key="idx">
-          <img :src="item.url" class="Img">
-        </swiper-slide>
-        <div class="swiper-pagination" slot="pagination"></div>
-      </swiper>
-    </div>
+  <div>
+    <el-row class="list clear" v-for="(item,idx) in commentData" :key="idx">
+      <!-- <el-row class="list clear" > -->
+      <el-col :span="3">
+        <!-- 用户头像 -->
+        <i class="iconfont myFont">&#xe6b0;</i>
+      </el-col>
+      <el-col :span="16">
+        <el-row :span="8">
+          <!-- 用户名 -->
+          <!-- <span class="name">{{commentData[0].UserName}}</span> -->
+          <span class="name">{{item.UserName}}</span>
+        </el-row>
+        <el-row :span="8">
+          <div class="block">
+            <!-- 评论分数 -->
+            <span class="demonstration"></span>
+            <el-rate v-model="pointArr[idx].point"></el-rate>
+          </div>
+        </el-row>
+        <el-row :span="8">
+          <!-- 评论内容 -->
+          <div class="desc">{{item.detail}}</div>
+        </el-row>
+      </el-col>
+      <el-col :span="5">
+        <span class="Data">{{item.time}}</span>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
 <script>
-import { swiper, swiperSlide } from "vue-awesome-swiper";
-import "@/assets/css/swiper.css";
 export default {
   data() {
     return {
-      value: 2,
+      commentData: {},
+      value: 0,
       imgs: [],
-      // imgs: [
-      //   {
-      //     url:
-      //       "http://p0.meituan.net/shaitu/149dabe74e31e7acb1e45688547a60841962139.jpg"
-      //   },
-      //   {
-      //     url:
-      //       "http://p0.meituan.net/shaitu/73d4442bd54fee0b371a6ec1b46e2e5d1649194.jpg"
-      //   },
-      //   {
-      //     url:
-      //       "http://p0.meituan.net/shaitu/3546806bd981ea7fea39acbf4b8f9e001319489.jpg"
-      //   },
-      //   {
-      //     url:
-      //       "http://p0.meituan.net/shaitu/1a0c1090bb89007d46826114eedc0b202103538.jpg"
-      //   },
-      //   {
-      //     url:
-      //       "http://p0.meituan.net/shaitu/83b3d75d60ec6f5ee6941a6be9bdfacc1605868.jpg"
-      //   },
-      //   {
-      //     url:
-      //       "http://p0.meituan.net/shaitu/d6b8bde4640ab8c207b2a1486d18edc91735870.jpg"
-      //   }
-      // ],
-      swiperOption: {
-        slidesPerView: 3,
-        spaceBetween: 30,
-        slidesPerGroup: 3,
-        loop: true,
-        loopFillGroupWithBlank: true,
-        pagination: {
-          el: ".swiper-pagination",
-          clickable: true
-        }
-      }
+      pointArr:[],
     };
   },
-  components: {
-    swiper,
-    swiperSlide
+  computed: {
+    curValue: function() {
+      return this.commentData.map(item=>{
+        item.point
+      })
+    }
+  },
+  async mounted() {
+    let name2 = window.location.href.split("/");
+    let len = window.location.href.split("/").length;
+    let ontherName = decodeURIComponent(name2[len - 2]);
+    document.cookie = "name=" + ontherName;
+    let name = document.cookie.split("=")[1];
+    // console.log(ontherName, "子组件去请求数据使用的值");
+    // console.log(name, "子组件设置cookie的值");
+    let {
+      stauts,
+      data: { comment }
+    } = await this.$axios.get("/comment/getComment", {
+      params: {
+        GoodName: ontherName
+      }
+    });
+    // console.log(comment, "在子组件获取的评论数据");
+    this.commentData = comment;
+    // 单独去获取评论数据中的评分数据
+    // 通过map方法筛选出一个数组,里面全部是评分数据
+    let Arrpoint = this.commentData.map(item=>{
+      return {
+        point: item.point
+      }
+    })
+    this.pointArr = Arrpoint
   }
 };
 </script>
 <style lang="scss">
-.list {
-  padding: 30px 0 0 30px;
-  .header {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    float: left;
-    > img {
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
+.el-row {
+  .el-col {
+    .myFont {
+      color: #333333;
+      font-size: 50px;
+      text-align: center;
+      line-height: 115px;
+      margin-left: 35px;
     }
-  }
-  .info {
-    float: left;
-    padding-left: 20px;
-    width: 828px;
-    .name {
-      font-size: 16px;
-      color: #222;
-      line-height: 22px;
-      margin-bottom: 1px;
+    .el-row {
+      // margin: 0 0 10px 0;
+      // padding: 0px 0 0 15px;
+      .name {
+        font-size: 20px;
+        color: #222;
+        line-height: 22px;
+      }
+      .block {
+        height: 20px;
+        font-size: 11px;
+      }
+      .desc {
+        font-size: 15px;
+      }
     }
-    .block {
-      line-height: 0px;
-      margin-top: 4px;
+    .Data {
       height: 20px;
-      font-size: 11px;
-    }
-    .date {
-      font-size: 12px;
-      line-height: 20px;
+      font-size: 16px;
+      line-height: 120px;
       color: #999;
-      > span {
-        float: right;
-      }
-    }
-    .desc {
-      font-size: 14px;
-      line-height: 20px;
-      padding-top: 4px;
-    }
-    .swiper {
-      .Img {
-        width: 100px;
-        height: 100px;
-      }
+      text-align: center;
+      margin-top: 20px;
     }
   }
 }
@@ -135,3 +121,4 @@ export default {
   height: 0;
 }
 </style>
+

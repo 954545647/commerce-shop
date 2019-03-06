@@ -64,7 +64,7 @@
           <el-tab-pane label="待付款" name="unpay">
             <list :cur="Unpay"/>
           </el-tab-pane>
-          <el-tab-pane label="待使用" name="unuse" @click="unUse">
+          <el-tab-pane label="待评价" name="unuse">
             <list :cur="HasPay"/>
           </el-tab-pane>
           <el-tab-pane label="退款/售后" name="unreplay">
@@ -86,23 +86,21 @@ export default {
   data() {
     return {
       activeName: "all",
-      list: [],
-      cur: []
+      list: [], //全部数据
+      cur: [], //用来父子传递的
+      Unpay: [], //未付款
+      HasPay: [] //已经付款的
     };
   },
   watch: {
-    activeName: function(val) {
-      console.log(val);
-    }
+    activeName: function(val) {}
   },
   methods: {
     handleClick() {},
-    unUse() {
-      console.log(this.HasPay);
-    }
+    unUse() {}
   },
-  async mounted() {
-    console.log(this.HasPay);
+  mounted() {
+    let city = sessionStorage.getItem("currentCity");
   },
   async asyncData(ctx) {
     let {
@@ -130,19 +128,7 @@ export default {
             id: item.id
           };
         }),
-        // cur: list.map(item => {
-        //   return {
-        //     img: item.imgs.length ? item.imgs[0].url : "@/3.png",
-        //     name: item.name,
-        //     count: item.count,
-        //     total: item.total,
-        //     status: item.status,
-        //     statusTxt: item.status === 0 ? "待付款" : "已付款",
-        //     id: item.id
-        //   };
-        // }),
-        // 未付款的!!
-        // 先根据 status 筛选出没有付款的数据
+        // 未付款
         Unpay: list
           .filter(item => {
             return !item.status;

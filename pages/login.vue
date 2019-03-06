@@ -24,7 +24,7 @@
         <el-input v-model="password" prefix-icon="password" type="password"/>
         <div class="foot">
           <el-checkbox v-model="checked">7天内自动登录</el-checkbox>
-          <b>忘记密码？</b>
+          <nuxt-link to="/register">立即注册</nuxt-link>
         </div>
         <el-button class="btn-login" type="success" size="mini" @click="login">登录</el-button>
       </div>

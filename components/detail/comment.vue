@@ -1,53 +1,7 @@
 <template>
   <div class="com-cont">
-    <ul class="tags clear">
-      <li class>
-        味道赞
-        (271)
-      </li>
-      <li class>
-        服务热情
-        (199)
-      </li>
-      <li class>
-        菜品不错
-        (86)
-      </li>
-      <li class>
-        回头客
-        (85)
-      </li>
-      <li class>
-        性价比高
-        (84)
-      </li>
-      <li class>
-        价格实惠
-        (82)
-      </li>
-      <li class>
-        分量足
-        (76)
-      </li>
-      <li class>
-        上菜快
-        (70)
-      </li>
-      <li class>
-        干净卫生
-        (64)
-      </li>
-      <li class>朋友聚餐(6)</li>
-      <li class>朋友聚餐(6)</li>
-    </ul>
-    <div class="sea">
-      <span>
-        <b class></b>
-        只看有图片的评论
-      </span>
-    </div>
     <div class>
-      <ctem/>
+      <ctem  />
     </div>
   </div>
 </template>
@@ -57,7 +11,7 @@ import Ctem from "./ctem.vue";
 export default {
   components: {
     Ctem
-  }
+  },
 };
 </script>
 

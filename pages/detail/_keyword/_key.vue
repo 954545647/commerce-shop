@@ -30,16 +30,16 @@
         </div>
       </el-col>
     </el-row>
-    <!--评论标题 -->
-    <el-row class="m-title">
+    <!-- 评论标题 -->
+    <el-row class="m-title" v-if="this.comment">
       <el-col :span="24">
-        <h3>1431条网友点评</h3>
+        <h3 v-if="this.comment">热心网友点评</h3>
       </el-col>
     </el-row>
     <!-- 评论模块 -->
-    <el-row class="m-title">
+    <el-row class="m-title" v-if="this.comment">
       <el-col :span="24">
-        <comment />
+        <comment/>
       </el-col>
     </el-row>
   </div>
@@ -49,8 +49,18 @@
 import crumb from "@/components/detail/crumb.vue";
 import summ from "@/components/detail/summary.vue";
 import List from "@/components/detail/list.vue";
-import comment from '@/components/detail/comment.vue';
+import comment from "@/components/detail/comment.vue";
 export default {
+  data() {
+    return {
+      keyword: "",
+      type: "",
+      login: "",
+      product: {},
+      list: [],
+      comment: []
+    };
+  },
   components: {
     crumb,
     summ,
@@ -62,43 +72,76 @@ export default {
       return this.list.filter(item => item.photos.length).length;
     }
   },
-  // 如果在asyncData中返回了数据,那么data中就可以不用写了
-  // data() {
-  //   return {
-  //     product: ""
-  //   };
-  // },
-  async asyncData(ctx) {
-    console.log(ctx.store.state.geo.position.city,'9999999999')
-    let { keyword, key:type } = ctx.params;
+  async mounted() {
+    let self = this;
+    let hrefData = window.location.href.split("/");
+    let number = window.location.href.split("/").length;
+    let key = decodeURIComponent(hrefData[number - 1]); //类型
+    let type = decodeURIComponent(hrefData[number - 2]); //商品名称
+    let city = window.sessionStorage.getItem("currentCity");
+    // console.log(type, "当前导航条商品名称");
+    // console.log('父组件获取cookie的值为',document.cookie.split('=')[1])
     let {
       status,
       data: { product, more: list, login }
-    } = await ctx.$axios.get("/search/products", {
+    } = await this.$axios.get("/search/products", {
       params: {
-        keyword,
+        keyword: key,
         type,
-        city: ctx.store.state.geo.position.city
+        city
       }
     });
+    // console.log()
     if (status === 200) {
-      return {
-        keyword,
-        product,
-        type,
-        list,
-        login
-      };
-    } else {
-      return {
-        keyword,
-        product: {},
-        type,
-        list: [],
-        login: false
-      };
+      self.keyword = key;
+      self.product = product;
+      self.type = type;
+      self.list = list;
+      self.login = login;
     }
+
+    // 获取评论数据
+    // let {
+    //   stauts,
+    //   data: { comment }
+    // } = await self.$axios.get("/comment/getComment", {
+    //   params: {
+    //     GoodName: type
+    //   }
+    // });
+    // this.comment = comment;
+    // console.log(this.comment, "在detail详情页面获取评论数据");
   }
+  // async asyncData(ctx) {
+  //   let { keyword, key: type } = ctx.params;
+  //   let {
+  //     status,
+  //     data: { product, more: list, login }
+  //   } = await ctx.$axios.get("/search/products", {
+  //     params: {
+  //       keyword,
+  //       type,
+  //       city: ctx.store.state.geo.position.city
+  //     }
+  //   });
+  //   if (status === 200) {
+  //     return {
+  //       keyword,
+  //       product,
+  //       type,
+  //       list,
+  //       login
+  //     };
+  //   } else {
+  //     return {
+  //       keyword,
+  //       product: {},
+  //       type,
+  //       list: [],
+  //       login: false
+  //     };
+  //   }
+  // }
 };
 </script>
 

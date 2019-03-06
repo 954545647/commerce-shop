@@ -15,7 +15,7 @@
           <el-col :span="5">{{item.statusTxt}}</el-col>
           <el-col :span="3">
             <el-button v-if="item.status===0" type="info" round @click="topay(item)">去付款</el-button>
-            <el-button v-else type="primary" round @click="topay(item)">去评价</el-button>
+            <el-button v-else type="primary" round @click="toCom(item)">去评价</el-button>
           </el-col>
         </el-row>
         <el-pagination
@@ -59,16 +59,27 @@ export default {
     currentHandle(val) {
       this.currentPage = val;
     },
+    // 去付款
     async topay(value){
       // 订单号
       let order = value.id
+      console.log(value)
       let {status,data} = await this.$axios.post('/pay',{
         timeoutExpress: '30m',
         orderId: order,
         money: value.total
       })
       // 跳转到支付链接
+      //  this.$router.replace(data)
+      //  this.$router.replace('${data}')
       location.href = data;
+    },
+    // 去评价
+    async toCom(value){
+      this.$router.push({
+        path: `/comment?id=${value.id}`
+      })
+      // window.location.href = `/comment?id=${value.id}`
     }
   },
   watch: {

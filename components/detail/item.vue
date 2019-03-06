@@ -61,7 +61,10 @@ export default {
       // 我们在创建购物车的时候得到了这个id,此时我们就把这个id通过url传参传到订单页面
       // 在订单页面我们就可以通过在 url 中获取参数然后去请求数据
       if(status===200&&code===0){
-        window.location.href=`/cart/?id=${id}`
+        // window.location.href=`/cart/?id=${id}`
+        this.$router.push({
+          path: `/cart/?id=${id}`
+        })
       }else{
         console.log('error')
       }

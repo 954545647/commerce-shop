@@ -14,7 +14,7 @@ import User from '../dbs/modules/user'
 const router = new Router()
 const alipaySdk = new AlipaySdk({
   gateway: "https://openapi.alipaydev.com/gateway.do",
-  appId: "2016092400582589",
+  appId: "2016092800615427",
   privateKey: fs.readFileSync(path.resolve(path.join(__dirname,'./private-key.pem')), "ascii"),
   alipayPublicKey: fs.readFileSync(path.resolve(path.join(__dirname,'./public-key.pem')), "ascii")
 });
