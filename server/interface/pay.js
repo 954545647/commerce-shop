@@ -36,7 +36,7 @@ router.post("/pay", async (ctx, next) => {
     productCode: "FAST_INSTANT_TRADE_PAY",
     // 订单价格
     totalAmount: req.money.toString(),
-    subject: "一订 - 预订金"
+    subject: "支付金额"
   });
   try {
     const result = await alipaySdk.exec(
@@ -55,17 +55,14 @@ router.get("/pay-confirm", async (ctx, next) => {
   let payUp = alipaySdk.checkNotifySign(ctx.query);
   ctx.body = ctx.query
   let goodId = ctx.query.out_trade_no
-  console.log(goodId)
   if(payUp){
     let userId =  ctx.session.passport.user
     let result = await Order.find({id: goodId})
     let data = await Order.where({
       id: goodId
     }).update({
-      status: 2
+      status: 1
     })
-    console.log(data,'1')
-    console.log(result,'2')
   }
   // if (payUp) {
   //   let result = await Orderform.updateOne(
@@ -81,7 +78,6 @@ router.get("/pay-confirm", async (ctx, next) => {
   //   ctx.status = 301;
   //   return ctx.response.redirect("/");
   // }
-  console.log(payUp,'5666')
   ctx.status = 301;
   return ctx.response.redirect("/order");
 });

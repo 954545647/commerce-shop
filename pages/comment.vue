@@ -54,10 +54,11 @@ export default {
   },
   methods: {
     async sendCom() {
-      let name = this.name;
-      let Point = this.Point;
-      let detail = this.detail;
+      let name = this.name;   //评价姓名
+      let Point = this.Point; //评价分数
+      let detail = this.detail; //评价详情
       let id = window.location.href.split("id=")[1];
+      console.log(id,'点击去评论传过来的id值')
       let time = new Date();
       let year = time.getFullYear();
       let m = time.getMonth() + 1;
@@ -70,7 +71,7 @@ export default {
       let minutes = String(min).padStart(2, "0");
       let s = time.getSeconds();
       let sec = String(s).padStart(2, "0");
-      let currentTime = `${year}-${month}-${date} ${hour}:${minutes}:${sec}`;
+      let currentTime = `${year}-${month}-${date} ${hour}:${minutes}:${sec}`; //评价时间
       // 获取cookie中的商品名字
       let goodName = document.cookie.split('=')[1];
       // console.log('此时cookie中的值为',goodName)
@@ -95,7 +96,6 @@ export default {
         this.$router.push({
           path: `/products/${goodName}`
         });
-        // console.log(this.curData)
         // window.location = "/";
       }
     }

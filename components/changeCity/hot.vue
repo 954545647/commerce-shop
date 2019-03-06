@@ -33,9 +33,9 @@ export default {
   },
   methods: {
     changeCity(e) {
-      console.log(e.target.innerText)
       window.sessionStorage.setItem('currentCity',e.target.innerText)
-      window.location = '/'
+      // this.$router.push('/')
+      window.location = "/";
     }
   }
 };

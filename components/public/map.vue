@@ -4,7 +4,7 @@
     :id="id"
     :style="{width:width+'px',height:height+'px',margin:'32px auto'}"
     class="m-map"
-    :class="{isFix : flag}"
+    :class="{isFix : flag, isAbso: Flag}"
   />
 </template>
 
@@ -35,7 +35,8 @@ export default {
   data() {
     return {
       id: `map`,
-      flag: false
+      flag: false,
+      Flag: false
     };
   },
   watch: {
@@ -109,10 +110,19 @@ export default {
 
     window.addEventListener("scroll", function(e) {
       let h = document.documentElement.scrollTop || document.body.scrollTop;
-      if (h < 240) {
+      // 一开始还没移动到商品栏的时候
+      if (h < 243) {
         self.flag = false;
+        self.Flag = false;
+        //移动到商品栏底部的时候
+        // 变成绝对定位
+      } else if (h > 655) {
+        self.Flag = true;
+        self.flag = false;
+        // 在头部和底部之间
       } else {
         self.flag = true;
+        self.Flag = false;
       }
     });
   }
@@ -120,10 +130,18 @@ export default {
 </script>
 
 <style lang="scss">
+// 美团的是一开始是static定位
+// 然后开始移动到一定距离的时候变成fixed
+// 最后超出距离就变成absolute定位
 .isFix {
   position: fixed !important;
-  right: 180px;
-  top: -50px;
+  right: 176px;
+  top: -52px;
+}
+.isAbso {
+  position: absolute;
+  left: 0px;
+  top: 400px;
 }
 </style>
 

@@ -67,8 +67,8 @@
           <el-tab-pane label="待评价" name="unuse">
             <list :cur="HasPay"/>
           </el-tab-pane>
-          <el-tab-pane label="退款/售后" name="unreplay">
-            <list :cur="list"/>
+          <el-tab-pane label="已评价" name="unreplay">
+            <list :cur="HasComment"/>
           </el-tab-pane>
         </el-tabs>
       </el-col>
@@ -89,7 +89,8 @@ export default {
       list: [], //全部数据
       cur: [], //用来父子传递的
       Unpay: [], //未付款
-      HasPay: [] //已经付款的
+      HasPay: [], //已经付款的
+      HasComment: []//已经评论的
     };
   },
   watch: {
@@ -147,7 +148,7 @@ export default {
         // 已经付款了的!
         HasPay: list
           .filter(item => {
-            return item.status;
+            return item.status===1;
           })
           .map(item => {
             return {
@@ -157,6 +158,23 @@ export default {
               total: item.total,
               status: item.status,
               statusTxt: "已付款",
+              id: item.id
+            };
+          }),
+
+        // 已经评价了的!
+        HasComment: list
+          .filter(item => {
+            return item.status === 2;
+          })
+          .map(item => {
+            return {
+              img: item.imgs.length ? item.imgs[0].url : "@/3.png",
+              name: item.name,
+              count: item.count,
+              total: item.total,
+              status: item.status,
+              statusTxt: "已评价",
               id: item.id
             };
           })

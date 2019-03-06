@@ -14,8 +14,9 @@
           <el-col :span="4">总价: ￥{{item.total}}</el-col>
           <el-col :span="5">{{item.statusTxt}}</el-col>
           <el-col :span="3">
-            <el-button v-if="item.status===0" type="info" round @click="topay(item)">去付款</el-button>
-            <el-button v-else type="primary" round @click="toCom(item)">去评价</el-button>
+            <el-button v-if="item.status===0" type="danger" round @click="topay(item)">去付款</el-button>
+            <el-button v-else-if="item.status===1" type="warning" round @click="toCom(item)">去评价</el-button>
+            <el-button v-else type="primary" round @click="toSee(item)">看评论</el-button>
           </el-col>
         </el-row>
         <el-pagination
@@ -60,26 +61,36 @@ export default {
       this.currentPage = val;
     },
     // 去付款
-    async topay(value){
+    async topay(value) {
       // 订单号
-      let order = value.id
-      console.log(value)
-      let {status,data} = await this.$axios.post('/pay',{
-        timeoutExpress: '30m',
+      let order = value.id;
+      console.log(order, "去付款的id");
+      console.log(value);
+      let { status, data } = await this.$axios.post("/pay", {
+        timeoutExpress: "30m",
         orderId: order,
         money: value.total
-      })
+      });
       // 跳转到支付链接
       //  this.$router.replace(data)
       //  this.$router.replace('${data}')
       location.href = data;
     },
     // 去评价
-    async toCom(value){
+    async toCom(value) {
+      console.log(value.id, "去评价的id值");
+      let id = value.id; //要去评论的id值
       this.$router.push({
         path: `/comment?id=${value.id}`
-      })
+      });
       // window.location.href = `/comment?id=${value.id}`
+    },
+    // 去查看评论
+    toSee(value) {
+      let name = value.name
+      this.$router.push({
+        path: `/products/${name}`
+      });
     }
   },
   watch: {

@@ -43,7 +43,9 @@ export default {
         data: { result }
       } = await self.$axios.get("/search/hotPlace", {
         params: {
-          city: ses.getItem("currentCity").replace("市", "")
+          city: ses.getItem("currentCity")
+            ? ses.getItem("currentCity").replace("市", "")
+            : ses.getItem("currentCity")
         }
       });
       ses.setItem("result", JSON.stringify(result));
@@ -53,14 +55,14 @@ export default {
     await self.$store.dispatch(
       "geo/setPosition",
       {
-        city: window.sessionStorage.getItem("currentCity").replace('市',''),
+        city: window.sessionStorage.getItem("currentCity").replace("市", ""),
         province: window.sessionStorage.getItem("currentPro")
       },
       { root: true }
     );
     // 设置热门城市
     self.$store.dispatch("home/setHotPlace", JSON.parse(ses.getItem("result")));
-  }
+  },
 };
 </script>
 

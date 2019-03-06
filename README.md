@@ -19,4 +19,8 @@ $ npm start
 $ npm run generate
 ```
 
+### 评论
++ 0 : 未付款
++ 1 : 已经付款
++ 2 : 已经评价
 For detailed explanation on how things work, checkout [Nuxt.js docs](https://nuxtjs.org).

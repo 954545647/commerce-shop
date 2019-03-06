@@ -1,30 +1,35 @@
 <template>
   <div class="m-geo">
     <i class="iconfont icon-location"/>
-    <!-- {{$store.state.geo.position.city}} -->
     {{currentCityName}}
     <nuxt-link class="changeCity" to="/changeCity">切换城市</nuxt-link>
   </div>
 </template>
 
 <script>
+import axios from "axios";
 export default {
   data() {
     return {
-      currentCityName:''
-    }
+      currentCityName: "",
+    };
   },
-  mounted() {
-    let cityname = this.$store.state.geo.position.city;
-    let Cityname = window.sessionStorage.getItem("currentCity").replace("市", "");
-    if(cityname){
-      this.currentCityName = cityname
-    }else{
-      this.currentCityName = Cityname
-    }
-  },
+  async mounted() {
+    let {
+      status,
+      data: { city }
+    } = await axios.get("geo/getPosition");
+    this.currentCityName = window.sessionStorage.getItem("currentCity")
+      ? window.sessionStorage.getItem("currentCity")
+      : city;
+  }
 };
 </script>
 
 <style lang="scss">
 </style>
+
+<!-- {{$store.state.geo.position.city}} -->
+<!-- <a href="/changeCity" class="changeCity">切换城市</a>-->
+// <nuxt-link class="changeCity" to="/changeCity">切换城市</nuxt-link>
+

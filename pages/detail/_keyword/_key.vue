@@ -30,16 +30,16 @@
         </div>
       </el-col>
     </el-row>
-    <!-- 评论标题 -->
+    <!-- 评论标题
     <el-row class="m-title" v-if="this.comment">
       <el-col :span="24">
         <h3 v-if="this.comment">热心网友点评</h3>
       </el-col>
-    </el-row>
+    </el-row> -->
     <!-- 评论模块 -->
     <el-row class="m-title" v-if="this.comment">
       <el-col :span="24">
-        <comment/>
+        <Comment/>
       </el-col>
     </el-row>
   </div>
@@ -49,7 +49,7 @@
 import crumb from "@/components/detail/crumb.vue";
 import summ from "@/components/detail/summary.vue";
 import List from "@/components/detail/list.vue";
-import comment from "@/components/detail/comment.vue";
+import Comment from "@/components/detail/comment.vue";
 export default {
   data() {
     return {
@@ -65,7 +65,7 @@ export default {
     crumb,
     summ,
     List,
-    comment
+    Comment
   },
   computed: {
     canOrder: function() {

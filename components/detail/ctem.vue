@@ -1,33 +1,35 @@
 <template>
   <div>
-    <el-row class="list clear" v-for="(item,idx) in commentData" :key="idx">
-      <!-- <el-row class="list clear" > -->
-      <el-col :span="3">
-        <!-- 用户头像 -->
-        <i class="iconfont myFont">&#xe6b0;</i>
-      </el-col>
-      <el-col :span="16">
-        <el-row :span="8">
-          <!-- 用户名 -->
-          <!-- <span class="name">{{commentData[0].UserName}}</span> -->
-          <span class="name">{{item.UserName}}</span>
-        </el-row>
-        <el-row :span="8">
-          <div class="block">
-            <!-- 评论分数 -->
-            <span class="demonstration"></span>
-            <el-rate v-model="pointArr[idx].point"></el-rate>
+      <el-row class="list clear" v-for="(item,idx) in commentData" :key="idx">
+        <!-- <el-row class="list clear" > -->
+        <el-col :span="3">
+          <!-- 用户头像 -->
+          <i class="iconfont myFont">&#xe6b0;</i>
+        </el-col>
+        <el-col :span="16">
+          <div class="contentBox">
+            <el-row :span="8">
+              <!-- 用户名 -->
+              <!-- <span class="name">{{commentData[0].UserName}}</span> -->
+              <span class="name">{{item.UserName}}</span>
+            </el-row>
+            <el-row :span="8">
+              <div class="block">
+                <!-- 评论分数 -->
+                <span class="demonstration"></span>
+                <el-rate v-model="pointArr[idx].point" disabled></el-rate>
+              </div>
+            </el-row>
+            <el-row :span="8">
+              <!-- 评论内容 -->
+              <div class="desc">{{item.detail}}</div>
+            </el-row>
           </div>
-        </el-row>
-        <el-row :span="8">
-          <!-- 评论内容 -->
-          <div class="desc">{{item.detail}}</div>
-        </el-row>
-      </el-col>
-      <el-col :span="5">
-        <span class="Data">{{item.time}}</span>
-      </el-col>
-    </el-row>
+        </el-col>
+        <el-col :span="5">
+          <span class="Data">{{item.time}}</span>
+        </el-col>
+      </el-row>
   </div>
 </template>
 
@@ -38,14 +40,14 @@ export default {
       commentData: {},
       value: 0,
       imgs: [],
-      pointArr:[],
+      pointArr: []
     };
   },
   computed: {
     curValue: function() {
-      return this.commentData.map(item=>{
-        item.point
-      })
+      return this.commentData.map(item => {
+        item.point;
+      });
     }
   },
   async mounted() {
@@ -66,30 +68,26 @@ export default {
     });
     // console.log(comment, "在子组件获取的评论数据");
     this.commentData = comment;
+    // 触发事件告诉父组件我这里有数据,你可以显示评论
+    console.log('准备触发父组件')
+    this.$emit('canShow','666666666')
+    console.log('已经触发父组件')
     // 单独去获取评论数据中的评分数据
     // 通过map方法筛选出一个数组,里面全部是评分数据
-    let Arrpoint = this.commentData.map(item=>{
+    let Arrpoint = this.commentData.map(item => {
       return {
         point: item.point
-      }
-    })
-    this.pointArr = Arrpoint
+      };
+    });
+    this.pointArr = Arrpoint;
   }
 };
 </script>
 <style lang="scss">
 .el-row {
   .el-col {
-    .myFont {
-      color: #333333;
-      font-size: 50px;
-      text-align: center;
-      line-height: 115px;
-      margin-left: 35px;
-    }
-    .el-row {
-      // margin: 0 0 10px 0;
-      // padding: 0px 0 0 15px;
+    .contentBox {
+      margin: 25px;
       .name {
         font-size: 20px;
         color: #222;
@@ -103,6 +101,14 @@ export default {
         font-size: 15px;
       }
     }
+    .myFont {
+      color: #333333;
+      font-size: 50px;
+      text-align: center;
+      line-height: 115px;
+      margin-left: 35px;
+    }
+
     .Data {
       height: 20px;
       font-size: 16px;

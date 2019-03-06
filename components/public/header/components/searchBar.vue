@@ -128,21 +128,23 @@ export default {
       }
     }, 300)
   },
-  // async mounted() {
-  //   let self = this;
-  //   let ses = window.sessionStorage;
+  async mounted() {
+    let self = this;
+    let ses = window.sessionStorage;
 
-  //   const {
-  //     status,
-  //     data: { result }
-  //   } = await self.$axios.get("/search/hotPlace", {
-  //     params: {
-  //       city: ses.getItem("currentCity").replace("市", "")
-  //     }
-  //   });
-  //   ses.setItem("result", JSON.stringify(result));
-  //   self.$store.commit("home/setHotPlace", JSON.parse(ses.getItem("result")));
-  // }
+    const {
+      status,
+      data: { result }
+    } = await self.$axios.get("/search/hotPlace", {
+      params: {
+        city: ses.getItem("currentCity")
+          ? ses.getItem("currentCity").replace("市", "")
+          : ses.getItem("currentCity")
+      }
+    });
+    ses.setItem("result", JSON.stringify(result));
+    self.$store.commit("home/setHotPlace", JSON.parse(ses.getItem("result")));
+  }
 };
 </script>
 

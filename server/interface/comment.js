@@ -28,6 +28,13 @@ router.get("/writeComment", async ctx => {
     detail,
     time
   });
+  // 根据传递过来的id值去数据库修改订单状态
+  let changeStatus = await Order.where({
+    id: GoodId
+  }).update({
+    status: 2
+  })
+  console.log(changeStatus,'我修改状态为2了')
   try {
     let result = await newComment.save();
     if (result) {

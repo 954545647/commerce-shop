@@ -91,7 +91,7 @@ export default {
         });
       }
       // 通过filter方法之后返回的是一个数组
-      let currentCityName = data[0].label
+      let currentCityName = data[0].label;
       const currentPro = this.province.filter(item => {
         return item.value == this.pvalue;
       });
@@ -105,7 +105,8 @@ export default {
       });
       window.sessionStorage.setItem("currentCity", currentCityName);
       window.sessionStorage.setItem("currentPro", currentPro[0].label);
-      this.$router.push("/");
+      // this.$router.push("/");
+      window.location = "/";
     }
   },
   // 页面渲染完毕后就通过异步方式去获取省份的数据
@@ -173,8 +174,8 @@ export default {
       // 希望用户重新登录的时候可以再次获取当前城市的数据,所以使用的sessionStorage
       window.sessionStorage.setItem("currentPro", currentPro[0].province);
       window.sessionStorage.setItem("currentCity", item.value);
-      this.$router.push("/");
-      // window.location='/'
+      // this.$router.push("/");
+      window.location = "/";
     }
   }
 };

@@ -52,7 +52,6 @@ export default {
   async asyncData(ctx) {
     let keyword = ctx.params.keyword;
     let city = ctx.store.state.geo.position.city;
-    console.log(city, "vuex中的city");
     let {
       status,
       data: { count, pois }
