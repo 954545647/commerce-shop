@@ -69,9 +69,8 @@ export default {
     // console.log(comment, "在子组件获取的评论数据");
     this.commentData = comment;
     // 触发事件告诉父组件我这里有数据,你可以显示评论
-    console.log('准备触发父组件')
-    this.$emit('canShow','666666666')
-    console.log('已经触发父组件')
+    // console.log(comment)
+    this.$emit('canshow',comment)
     // 单独去获取评论数据中的评分数据
     // 通过map方法筛选出一个数组,里面全部是评分数据
     let Arrpoint = this.commentData.map(item => {

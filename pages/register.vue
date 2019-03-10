@@ -157,7 +157,7 @@ export default {
               let count = 30;
               self.statusMsg = `验证码已发送,剩余${count}秒`;
               self.timerid = setInterval(() => {
-                console.log(self.timerid);
+                // console.log(self.timerid);
                 self.statusMsg = `验证码已发送,剩余${--count}秒`;
                 if (count === 0) {
                   self.statusMsg = "";

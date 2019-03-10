@@ -4,7 +4,7 @@
     :id="id"
     :style="{width:width+'px',height:height+'px',margin:'32px auto'}"
     class="m-map"
-    :class="{isFix : flag, isAbso: Flag}"
+    :class="{Fix : isFix, Abso: isAbso, abso:isabso}"
   />
 </template>
 
@@ -30,13 +30,19 @@ export default {
     name: {
       type: String,
       default: ""
+    },
+    count: {
+      type: Number,
+      default: ""
     }
   },
   data() {
     return {
       id: `map`,
-      flag: false,
-      Flag: false
+      isFix: false,  //固定定位
+      isabso: false, //当到底部时
+      isAbso: false, //在中间滚动时
+      totalCount: "",
     };
   },
   watch: {
@@ -49,6 +55,7 @@ export default {
     }
   },
   mounted() {
+    window.Allcount = this.count;
     let self = this;
     self.id = `map${Math.random()
       .toString()
@@ -110,19 +117,23 @@ export default {
 
     window.addEventListener("scroll", function(e) {
       let h = document.documentElement.scrollTop || document.body.scrollTop;
+      let moveH = (window.Allcount - 2) * 170.8 + 395 + 97;
       // 一开始还没移动到商品栏的时候
       if (h < 243) {
-        self.flag = false;
-        self.Flag = false;
+        self.isabso = false;
+        self.isFix = false;
+        self.isAbso = false;
         //移动到商品栏底部的时候
         // 变成绝对定位
-      } else if (h > 655) {
-        self.Flag = true;
-        self.flag = false;
+      } else if (h > moveH) {
+        self.isabso = true;
+        self.isFix = false;
+        self.isAbso = false;
         // 在头部和底部之间
       } else {
-        self.flag = true;
-        self.Flag = false;
+        self.isAbso = false;
+        self.isFix = true;
+        self.isabso = false;
       }
     });
   }
@@ -133,15 +144,20 @@ export default {
 // 美团的是一开始是static定位
 // 然后开始移动到一定距离的时候变成fixed
 // 最后超出距离就变成absolute定位
-.isFix {
+.Fix {
   position: fixed !important;
   right: 176px;
   top: -52px;
 }
-.isAbso {
+.Abso {
   position: absolute;
   left: 0px;
-  top: 400px;
+  top: 570px;
+}
+.abso{
+  position: absolute !important;
+  right: 0;
+  bottom: -30px;
 }
 </style>
 

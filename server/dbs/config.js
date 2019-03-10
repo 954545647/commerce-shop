@@ -1,4 +1,4 @@
-export default {
+export default  {
   // 配置mongodb连接数据库地址
   // mongodb的端口27017
   dbs: "mongodb://127.0.0.1:27017/meituan",

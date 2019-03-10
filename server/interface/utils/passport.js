@@ -1,7 +1,7 @@
-import passport from 'koa-passport'        //passport基于koa封装的库
+import passport from 'koa-passport'       //passport基于koa封装的库
 import LocalStrategy from 'passport-local' //引入本地策略
 
-import UserModel from './../../dbs/modules/user'
+import UserModel  from './../../dbs/modules/user'
 
 // 设置本地策略
 passport.use(new LocalStrategy(async function(username,password,done){
@@ -35,6 +35,7 @@ passport.deserializeUser(function(user,done){
 })
 
 export default passport
+// module.exports = passport;
 
 
 

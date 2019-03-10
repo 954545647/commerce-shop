@@ -6,7 +6,7 @@
       <list :list="list" @currentPoint="currentPoint" @currentName="currentName"/>
     </el-col>
     <el-col :span="5" class="fix">
-      <amap  v-if="point.length" :point="point" :name="name" :width="230" :height="290"/>
+      <amap  v-if="point.length" :point="point" :name="name" :width="230" :height="290" :count="list.length" />
     </el-col>
   </el-row>
 </template>
@@ -38,6 +38,7 @@ export default {
       areas: [],
       keyword: "",
       point: [], //经纬度,
+      count:'',
       name: "" //传递过来的名字
     };
   },

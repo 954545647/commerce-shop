@@ -34,7 +34,7 @@ router.get("/writeComment", async ctx => {
   }).update({
     status: 2
   })
-  console.log(changeStatus,'我修改状态为2了')
+  // console.log(changeStatus,'我修改状态为2了')
   try {
     let result = await newComment.save();
     if (result) {
@@ -64,7 +64,7 @@ router.get('/getComment', async ctx=>{
   let result = await Comment.find({
     GoodName : GoodName
   })
-  console.log(result,'这是在服务端打印的数据')
+  // console.log(result,'这是在服务端打印的数据')
   if(result){
     ctx.body={
       comment: result

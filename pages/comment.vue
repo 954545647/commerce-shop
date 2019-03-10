@@ -58,7 +58,7 @@ export default {
       let Point = this.Point; //评价分数
       let detail = this.detail; //评价详情
       let id = window.location.href.split("id=")[1];
-      console.log(id,'点击去评论传过来的id值')
+      // console.log(id,'点击去评论传过来的id值')
       let time = new Date();
       let year = time.getFullYear();
       let m = time.getMonth() + 1;

@@ -64,21 +64,20 @@ export default {
     async topay(value) {
       // 订单号
       let order = value.id;
-      console.log(order, "去付款的id");
-      console.log(value);
+      // console.log(order, "去付款的id");
+      // console.log(value);
       let { status, data } = await this.$axios.post("/pay", {
         timeoutExpress: "30m",
         orderId: order,
         money: value.total
       });
       // 跳转到支付链接
-      //  this.$router.replace(data)
       //  this.$router.replace('${data}')
       location.href = data;
     },
     // 去评价
     async toCom(value) {
-      console.log(value.id, "去评价的id值");
+      // console.log(value.id, "去评价的id值");
       let id = value.id; //要去评论的id值
       this.$router.push({
         path: `/comment?id=${value.id}`

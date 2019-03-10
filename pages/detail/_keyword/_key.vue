@@ -12,7 +12,7 @@
     </el-row>
     <el-row class="m-title">
       <el-col :span="24">
-        <h3>商家团购及优惠</h3>
+        <h3 class="myh3">商家团购及优惠</h3>
       </el-col>
     </el-row>
     <!-- 商品详情是根据用户是否登录或者该商品有可购买的商品而来 -->
@@ -37,9 +37,9 @@
       </el-col>
     </el-row> -->
     <!-- 评论模块 -->
-    <el-row class="m-title" v-if="this.comment">
+    <el-row class="m-title" v-if="canOrder ">
       <el-col :span="24">
-        <Comment/>
+        <Comment @commentShow="commentshow" />
       </el-col>
     </el-row>
   </div>
@@ -58,7 +58,8 @@ export default {
       login: "",
       product: {},
       list: [],
-      comment: []
+      comment: [],
+      canCommentShow: [],
     };
   },
   components: {
@@ -70,6 +71,12 @@ export default {
   computed: {
     canOrder: function() {
       return this.list.filter(item => item.photos.length).length;
+    }
+  },
+  methods:{
+    commentshow(val){
+      console.log(val)
+      this.canCommentShow = val
     }
   },
   async mounted() {
@@ -99,8 +106,9 @@ export default {
       self.list = list;
       self.login = login;
     }
+  }
 
-    // 获取评论数据
+    // <!-- 获取评论数据 -->
     // let {
     //   stauts,
     //   data: { comment }
@@ -111,7 +119,6 @@ export default {
     // });
     // this.comment = comment;
     // console.log(this.comment, "在detail详情页面获取评论数据");
-  }
   // async asyncData(ctx) {
   //   let { keyword, key: type } = ctx.params;
   //   let {
