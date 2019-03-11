@@ -6,7 +6,7 @@
       <list :list="list" @currentPoint="currentPoint" @currentName="currentName"/>
     </el-col>
     <el-col :span="5" class="fix">
-      <amap  v-if="point.length" :point="point" :name="name" :width="230" :height="290" :count="list.length" />
+      <!-- <amap  v-if="point.length" :point="point" :name="name" :width="230" :height="290" :count="list.length" /> -->
     </el-col>
   </el-row>
 </template>
